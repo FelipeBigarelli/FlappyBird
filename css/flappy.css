@@ -13,7 +13,7 @@
     width: 1200px;
     height: 700px;
     background-image: url('../imgs/background.png');
-    background-size: 100%;
+    background-size: cover;
     margin: 15px;
     overflow: hidden;
 }
