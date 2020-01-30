@@ -77,16 +77,50 @@ function Barreiras(altura, largura, abertura, espaco, notificarPonto) { //Criar:
             // Quando a barreira cruzar o meio
             const meio = largura / 2
 
-            const cruzaMeio = par.getX() + deslocamento >= meio && par.getX() < meio
-            cruzaMeio && notificarPonto() // se cruzaMeio for TRUE, lanca o notificarPonto() OU if (cruzaMeio) notificarPonto()
+            const cruzouOMeio = par.getX() + deslocamento >= meio && par.getX() < meio
+            cruzouOMeio && notificarPonto() // se cruzaMeio for TRUE, lanca o notificarPonto() OU if (cruzaMeio) notificarPonto()
         })
     }
 }
 
+// Nocao da altura do jogo pra saber aonde pode subir ou descer (min max)
+function Passaro(alturaJogo) {
+    let voando = false //teclou sobe, soltou a tecla cai
+
+    this.elemento = novoElemento('img', 'passaro')
+    this.elemento.src = 'imgs/passaro.png'
+
+    this.getY = () => parseInt(this.elemento.style.bottom.split('px')[0])
+    this.setY = y => this.elemento.style.bottom = `${y}px`
+
+    window.onkeydown = evento => voando = true
+    window.onkeyup = evento => voando = false
+
+    this.animar = () => {
+        const novoY = this.getY() + (voando ? 8 : -5)
+        const alturaMaxima = alturaJogo - this.elemento.clientHeight
+
+        // Verificar passaro no teto e chao
+        if (novoY <= 0) {
+            this.setY(0)
+        } else if (novoY >= alturaMaxima) {
+            this.setY(alturaMaxima)
+        } else {
+            this.setY(novoY)
+        }
+    }
+
+    this.setY(alturaJogo / 2) // posicao inicial do passaro
+}
+
 // Teste
 const barreiras = new Barreiras(700, 1200, 300, 400)
+const passaro = new Passaro(700)
 const areaDoJogo = document.querySelector('[wm-flappy]')
+
+areaDoJogo = appendChild(passaro.elemento)
 barreiras.pares.forEach(par => areaDoJogo.appendChild(par.elemento))
 setInterval(() => {
     barreiras.animar()
+    passaro.animar()
 }, 20)
