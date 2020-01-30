@@ -13,7 +13,7 @@
     width: 1200px;
     height: 700px;
     background-image: url('../imgs/background.png');
-    background-size: contain;
+    background-size: 100%;
     margin: 15px;
     overflow: hidden;
 }
@@ -60,4 +60,5 @@
     right: 10px;
     font-family: Pixel;
     font-size: 3em;
+    z-index: 100;
 }
